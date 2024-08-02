@@ -51,6 +51,30 @@ const deleteUser = (req,res,next) =>{
         });
 };
 
+const getUsersCount = (req, res, next) => {
+    User.countDocuments({})
+        .then(count => {
+            res.json({ count });
+        })
+        .catch(error => {
+            res.json({ message: error });
+        });
+};
+
+const searchUsersByName = (req, res, next) => {
+    const name = req.query.name;
+    User.find({ name: new RegExp(name, 'i') })
+        .then(response => {
+            res.json({ response });
+        })
+        .catch(error => {
+            res.json({ message: error });
+        });
+};
+
+
+exports.searchUsersByName = searchUsersByName;
+exports.getUsersCount = getUsersCount;
 exports.getUsers = getUsers;
 exports.addUser = addUser;
 exports.updateUser = updateUser;
